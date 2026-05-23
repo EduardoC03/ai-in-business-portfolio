@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI in Business Portfolio — Eduardo Castaneda | MIS 432</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ── TOKENS ─────────────────────────────────── */
+:root {
+  --black:        #0e0e0d;
+  --off-black:    #1a1a18;
+  --magenta:      #e8197d;
+  --magenta-dark: #c0146a;
+  --magenta-dim:  rgba(232,25,125,0.12);
+  --off-white:    #f6f4f1;
+  --white:        #ffffff;
+  --border:       #e0ddd8;
+  --text:         #3a3a38;
+  --text-light:   #7a7a76;
+  --text-inv:     #f6f4f1;
+}
+
+/* ── RESET ───────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 400;
+  color: var(--text);
+  background: var(--off-white);
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ── NAV ─────────────────────────────────────── */
+nav {
+  background: var(--black);
+  border-bottom: 1px solid #2a2a28;
+  padding: 0 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.nav-logo {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-inv);
+}
+.nav-logo span { color: var(--magenta); }
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #9a9a96;
+  transition: color .15s;
+}
+.nav-links a:hover { color: var(--magenta); }
+
+/* ── HERO ────────────────────────────────────── */
+.hero {
+  background: var(--black);
+  border-bottom: 5px solid var(--magenta);
+  padding: 72px 5vw 68px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* magenta grid lines overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232,25,125,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,25,125,0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+
+/* subtle radial glow */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(232,25,125,0.13) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+}
+
+.hero-eyebrow {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--magenta);
+  margin-bottom: 18px;
+}
+
+.hero h1 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 1.05;
+  margin-bottom: 6px;
+}
+
+.hero h1 .accent { color: var(--magenta); }
+
+.hero-sub {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6a6a66;
+  margin-bottom: 28px;
+}
+
+.hero-rule {
+  width: 48px;
+  height: 3px;
+  background: var(--magenta);
+  margin-bottom: 28px;
+}
+
+.hero-desc {
+  font-size: 16px;
+  line-height: 1.75;
+  color: #b0b0aa;
+  max-width: 640px;
+}
+
+/* fade-up entrance */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-inner > * {
+  animation: fadeUp 0.55s ease both;
+}
+.hero-inner > *:nth-child(1) { animation-delay: .05s; }
+.hero-inner > *:nth-child(2) { animation-delay: .13s; }
+.hero-inner > *:nth-child(3) { animation-delay: .20s; }
+.hero-inner > *:nth-child(4) { animation-delay: .27s; }
+.hero-inner > *:nth-child(5) { animation-delay: .34s; }
+.hero-inner > *:nth-child(6) { animation-delay: .41s; }
+
+/* ── SECTION WRAPPER ─────────────────────────── */
+.section {
+  padding: 64px 5vw;
+}
+.section-alt { background: var(--white); }
+.section-dark { background: var(--off-black); }
+
+.section-label {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--magenta);
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+.section-dark .section-title { color: var(--white); }
+
+.section-rule {
+  width: 36px;
+  height: 3px;
+  background: var(--magenta);
+  margin-bottom: 36px;
+}
+
+/* ── ABOUT ───────────────────────────────────── */
+.about-text {
+  max-width: 740px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* ── GRID ────────────────────────────────────── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 1100px;
+}
+
+/* ── CARD ────────────────────────────────────── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--magenta);
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow .2s, border-color .2s;
+}
+.card:hover {
+  box-shadow: 0 0 0 1px var(--magenta), 0 6px 28px rgba(232,25,125,0.12);
+}
+
+.card-body {
+  padding: 26px 28px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-icon {
+  font-size: 26px;
+  margin-bottom: 14px;
+  line-height: 1;
+}
+
+.card-company {
+  font-family: 'Oswald', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--magenta);
+  margin-bottom: 4px;
+}
+
+.card-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--black);
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+.card-desc {
+  font-size: 14px;
+  line-height: 1.72;
+  color: var(--text);
+  flex: 1;
+  margin-bottom: 18px;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 22px;
+}
+
+.tag {
+  font-family: 'Oswald', sans-serif;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--off-white);
+  color: var(--text-light);
+  border: 1px solid var(--border);
+  padding: 4px 9px;
+  border-radius: 0;
+}
+
+.card-footer {
+  border-top: 1px solid var(--border);
+  padding: 14px 28px;
+}
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--magenta);
+  transition: gap .15s, color .15s;
+}
+.card-link:hover {
+  color: var(--magenta-dark);
+  gap: 12px;
+}
+.card-link svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  transition: transform .15s;
+}
+.card-link:hover svg { transform: translateX(3px); }
+
+/* ── TAKEAWAYS ───────────────────────────────── */
+.takeaways-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1px;
+  background: #2e2e2c;
+  border: 1px solid #2e2e2c;
+  max-width: 1100px;
+}
+
+.takeaway {
+  background: var(--off-black);
+  padding: 32px 28px;
+  position: relative;
+}
+.takeaway::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--magenta);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease;
+}
+.takeaway:hover::before { transform: scaleX(1); }
+
+.takeaway-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--magenta);
+  opacity: .25;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.takeaway h4 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.takeaway p {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #8a8a86;
+}
+
+/* ── FOOTER ──────────────────────────────────── */
+footer {
+  background: var(--black);
+  border-top: 5px solid var(--magenta);
+  padding: 40px 5vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.footer-name {
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 20px;
+  font-size: 13px;
+  color: #6a6a66;
+}
+.footer-links a {
+  color: var(--magenta);
+  transition: color .15s;
+}
+.footer-links a:hover { color: #ff3d96; }
+
+.footer-credit {
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #3a3a38;
+}
+.footer-credit span { color: var(--magenta); }
+
+/* ── MOBILE ──────────────────────────────────── */
+@media (max-width: 680px) {
+  .cards-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .hero { padding: 52px 5vw 48px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-logo">Eduardo <span>Castaneda</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#labs">Labs</a></li>
+    <li><a href="#takeaways">Takeaways</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">MIS 432 · Spring 2026 · Western Washington University</p>
+    <h1>AI in Business<br><span class="accent">Portfolio</span></h1>
+    <p class="hero-sub">College of Business and Economics &nbsp;·&nbsp; Eduardo Castaneda</p>
+    <div class="hero-rule"></div>
+    <p class="hero-desc">Seven labs. Seven companies. One quarter of hands-on AI research, implementation, and governance analysis.</p>
+  </div>
+</header>
+
+<!-- ══ ABOUT ══ -->
+<section class="section section-alt" id="about">
+  <p class="section-label">About This Portfolio</p>
+  <h2 class="section-title">What I Built This Quarter</h2>
+  <div class="section-rule"></div>
+  <p class="about-text">
+    This portfolio documents a quarter-long investigation into how seven real companies — from a drug discovery startup to a self-driving car company — actually deploy AI at scale. In each lab I moved beyond conceptual understanding to build working systems: a Spotify recommendation engine in Python, a Netflix A/B testing pipeline in Google Colab, and a clinical insurance appeal agent in n8n, among others. What I learned most wasn't the mechanics of any single model — it was the gap between AI hype and implementation reality: the data pipelines that break, the governance frameworks that get skipped, and the equity questions that rarely appear in press releases. Each lab is published as a standalone GitHub Pages project linked below.
+  </p>
+</section>
+
+<!-- ══ LABS GRID ══ -->
+<section class="section" id="labs">
+  <p class="section-label">Lab Work</p>
+  <h2 class="section-title">Seven Labs · Seven Companies</h2>
+  <div class="section-rule"></div>
+
+  <div class="cards-grid">
+
+    <!-- 1. EveryCure -->
+    <article class="card">
+      <div class="card-body">
+        <div class="card-icon">🧬</div>
+        <p class="card-company">EveryCure</p>
+        <h3 class="card-title">AI for Drug Repurposing</h3>
+        <p class="card-desc">Explored how EveryCure uses knowledge graphs and NLP to match existing FDA-approved drugs to rare diseases they were never designed to treat. Analyzed how the system surfaces non-obvious biological connections across millions of data points that no human researcher could manually scan — and what it means to trust an AI recommendation in a clinical context.</p>
+        <div class="card-tags">
+          <span class="tag">Knowledge Graphs</span>
+          <span class="tag">NLP</span>
+          <span class="tag">Drug Discovery</span>
+          <span class="tag">Graph AI</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="card-link" href="https://eduardoc03.github.io/everycure-drug-repurposing-system/" target="_blank" rel="noopener">
+          View Project
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- 2. Netflix -->
+    <article class="card">
+      <div class="card-body">
+        <div class="card-icon">🎬</div>
+        <p class="card-company">Netflix</p>
+        <h3 class="card-title">A/B Testing &amp; Experimentation</h3>
+        <p class="card-desc">Built a full A/B testing simulation in Python — randomized experiment design, CTR metrics, z-tests for statistical significance — styled as a professional GitHub Pages deliverable for non-technical audiences. Learned why Netflix runs thousands of simultaneous experiments and how the infrastructure that supports that is itself a core competitive advantage.</p>
+        <div class="card-tags">
+          <span class="tag">A/B Testing</span>
+          <span class="tag">Statistical Significance</span>
+          <span class="tag">Python</span>
+          <span class="tag">Experimentation</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="card-link" href="https://eduardoc03.github.io/netflix-ab-testing/" target="_blank" rel="noopener">
+          View Project
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- 3. Spotify -->
+    <article class="card">
+      <div class="card-body">
+        <div class="card-icon">🎵</div>
+        <p class="card-company">Spotify</p>
+        <h3 class="card-title">Recommendation Systems &amp; Personalization</h3>
+        <p class="card-desc">Implemented a collaborative filtering recommendation engine in Python, integrated live Spotify OAuth (PKCE flow) for real user data, and shipped a Wrapped-style feature on GitHub Pages. Examined how implicit signals — skips, replays, playlist adds — train a model differently than explicit ratings, and what the training-serving gap means in a real-time production system.</p>
+        <div class="card-tags">
+          <span class="tag">Collaborative Filtering</span>
+          <span class="tag">Recommendation Systems</span>
+          <span class="tag">OAuth</span>
+          <span class="tag">Implicit Signals</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="card-link" href="https://eduardoc03.github.io/spotify-recommendation-lab/" target="_blank" rel="noopener">
+          View Project
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- 4. Uber -->
+    <article class="card">
+      <div class="card-body">
+        <div class="card-icon">🚗</div>
+        <p class="card-company">Uber</p>
+        <h3 class="card-title">Forecasting &amp; Dynamic Pricing</h3>
+        <p class="card-desc">Analyzed how Uber's ML platform forecasts demand at a hyper-local, minute-level granularity and uses those predictions to drive surge pricing. Investigated Uber's approach to model validation — training on held-out historical data and running shadow deployments — and what happens when a pricing model drifts in a market with rapidly changing commute patterns.</p>
+        <div class="card-tags">
+          <span class="tag">Dynamic Pricing</span>
+          <span class="tag">Demand Forecasting</span>
+          <span class="tag">ML Ops</span>
+          <span class="tag">Time Series</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="card-link" href="https://eduardoc03.github.io/uber-ai-lab/" target="_blank" rel="noopener">
+          View Project
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- 5. Waymo -->
+    <article class="card">
+      <div class="card-body">
+        <div class="card-icon">🤖</div>
+        <p class="card-company">Waymo</p>
+        <h3 class="card-title">Deep Learning &amp; Computer Vision</h3>
+        <p class="card-desc">Examined how Waymo's sensor fusion pipeline combines LiDAR, radar, and camera data to build a real-time 3D model of the environment around a vehicle. Analyzed the training data flywheel — how every mile driven generates labeled data that improves future models — and why edge-case detection, not average-case accuracy, is the benchmark that actually matters for autonomous safety.</p>
+        <div class="card-tags">
+          <span class="tag">Computer Vision</span>
+          <span class="tag">Deep Learning</span>
+          <span class="tag">Sensor Fusion</span>
+          <span class="tag">LiDAR</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="card-link" href="https://eduardoc03.github.io/waymo_strategy_analysis/" target="_blank" rel="noopener">
+          View Project
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- 6. Airbnb -->
+    <article class="card">
+      <div class="card-body">
+        <div class="card-icon">🏠</div>
+        <p class="card-company">Airbnb</p>
+        <h3 class="card-title">Marketplace AI &amp; Dynamic Pricing</h3>
+        <p class="card-desc">Investigated how Airbnb's Smart Pricing system balances the goals of hosts (maximize revenue) and guests (find fair value) simultaneously — a two-sided marketplace problem most pricing models ignore. Analyzed how trust signals, review sentiment, and local event data feed into a system that prices thousands of listing types across wildly different geographies.</p>
+        <div class="card-tags">
+          <span class="tag">Marketplace AI</span>
+          <span class="tag">Dynamic Pricing</span>
+          <span class="tag">Two-Sided Markets</span>
+          <span class="tag">Sentiment Analysis</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="card-link" href="https://eduardoc03.github.io/airbnb-analysis/" target="_blank" rel="noopener">
+          View Project
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+    </article>
+
+    <!-- 7. Epic / Agentic AI — full width -->
+    <article class="card" style="grid-column: 1 / -1;">
+      <div class="card-body">
+        <div class="card-icon">🏥</div>
+        <p class="card-company">Epic Healthcare</p>
+        <h3 class="card-title">Agentic AI &amp; Insurance Advocacy</h3>
+        <p class="card-desc">Built two AI agents in n8n — an AI Insurance Advocate that drafts appeal letters for wrongly denied insurance claims, and a personal event planner — both powered by Claude Sonnet via the Anthropic API. The Insurance Advocate chains a Policy Lookup tool and a Patient Chart tool to surface evidence, draft a letter grounded only in documented facts, and gracefully flag when retrieved data is wrong rather than hallucinating forward. Completed a five-layer governance evaluation (purpose, data access, human oversight, auditing, and sunset) and analyzed the equity risk of deploying this tool only at well-resourced hospital systems.</p>
+        <div class="card-tags">
+          <span class="tag">Agentic AI</span>
+          <span class="tag">n8n</span>
+          <span class="tag">Tool Chaining</span>
+          <span class="tag">LLM Governance</span>
+          <span class="tag">Healthcare AI</span>
+          <span class="tag">Hallucination Risk</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a class="card-link" href="https://eduardoc03.github.io/agentic-ai-lab/" target="_blank" rel="noopener">
+          View Project
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ══ TAKEAWAYS ══ -->
+<section class="section section-dark" id="takeaways">
+  <p class="section-label" style="color:var(--magenta);">Key Takeaways</p>
+  <h2 class="section-title">What the Quarter Taught Me</h2>
+  <div class="section-rule"></div>
+
+  <div class="takeaways-grid">
+
+    <div class="takeaway">
+      <div class="takeaway-num">01</div>
+      <h4>The Pipeline Is the Product</h4>
+      <p>In every lab, the model was the least interesting part. The real engineering challenge was the data pipeline feeding it — cleaning, labeling, versioning, and monitoring the inputs. A state-of-the-art model on stale or biased data is worse than a simple model on clean data.</p>
+    </div>
+
+    <div class="takeaway">
+      <div class="takeaway-num">02</div>
+      <h4>Governance Can't Be Retrofitted</h4>
+      <p>Every system I studied — from Waymo's edge-case detection to the Insurance Advocate's hallucination guardrails — worked because governance was designed in from the start, not bolted on after deployment. Accountability, audit trails, and human oversight checkpoints need to be architectural decisions, not afterthoughts.</p>
+    </div>
+
+    <div class="takeaway">
+      <div class="takeaway-num">03</div>
+      <h4>Business Value Lives in Integration</h4>
+      <p>Model accuracy is a threshold requirement, not a differentiator. What separates Spotify's recommendation engine from a research paper is the workflow integration — how the model's output flows into the product, how it's monitored in production, and how it adapts when user behavior shifts. The last mile is where value is created or lost.</p>
+    </div>
+
+    <div class="takeaway">
+      <div class="takeaway-num">04</div>
+      <h4>Equity Is a Deployment Decision</h4>
+      <p>Who gets access to AI tools shapes who benefits from them. The Insurance Advocate lab made this concrete: if only large, well-resourced hospitals can afford the tool, insurers quietly shift denial patterns toward rural clinics that can't fight back. Every deployment decision is an equity decision — and it needs to be treated as one from day one.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-name">Eduardo Castaneda</div>
+  <div class="footer-links">
+    <a href="mailto:eddiecastan35@gmail.com">eddiecastan35@gmail.com</a>
+    <span>·</span>
+    <a href="https://www.linkedin.com/in/eduardocastane" target="_blank" rel="noopener">linkedin.com/in/eduardocastane</a>
+  </div>
+  <div class="footer-credit">Built with <span>Claude</span> &nbsp;·&nbsp; MIS 432 · AI in Business &nbsp;·&nbsp; Western Washington University</div>
+</footer>
+
+</body>
+</html>
